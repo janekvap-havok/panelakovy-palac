@@ -32,6 +32,8 @@ let openingDoor = false;
 let renderedDay;
 let cheatBackup = null;
 let lastP = -Infinity;
+let palaceTaps = 0;
+let firstPalaceTap = -Infinity;
 
 function availableDay(date = new Date()) {
   if (cheatBackup) return total;
@@ -254,19 +256,10 @@ reveal.addEventListener("close", () => {
 });
 replay.addEventListener("click", () => void playFinale());
 
-window.addEventListener("keydown", (event) => {
-  if (event.repeat) return;
-  if (event.key.toLowerCase() !== "p" || event.ctrlKey || event.altKey || event.metaKey ||
-      event.isComposing || reveal.open || openingDoor || climbing) {
-    lastP = -Infinity;
-    return;
-  }
-  const now = performance.now();
-  if (now - lastP > 650) {
-    lastP = now;
-    return;
-  }
+function toggleCheatMode() {
+  if (reveal.open || openingDoor || climbing) return;
   lastP = -Infinity;
+  palaceTaps = 0;
   if (cheatBackup) {
     ({ opened, finalePlayed } = cheatBackup);
     cheatBackup = null;
@@ -280,6 +273,30 @@ window.addEventListener("keydown", (event) => {
     cheatNote.textContent = "Zkušební režim: všechna okénka jsou dostupná. Postup se neukládá.";
   }
   updateWindows();
+}
+
+window.addEventListener("keydown", (event) => {
+  if (event.repeat) return;
+  if (event.key.toLowerCase() !== "p" || event.ctrlKey || event.altKey || event.metaKey ||
+      event.isComposing || reveal.open || openingDoor || climbing) {
+    lastP = -Infinity;
+    return;
+  }
+  const now = performance.now();
+  if (now - lastP > 650) lastP = now;
+  else toggleCheatMode();
+});
+
+document.querySelector("#palace-word").addEventListener("click", () => {
+  const now = performance.now();
+  if (palaceTaps === 0 || now - firstPalaceTap > 2500) {
+    firstPalaceTap = now;
+    palaceTaps = 0;
+  }
+  if (++palaceTaps === 5) {
+    palaceTaps = 0;
+    toggleCheatMode();
+  }
 });
 
 function refreshDate() {

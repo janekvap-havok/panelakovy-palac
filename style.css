@@ -19,6 +19,7 @@ button:focus-visible { outline: 3px solid #fff4ad; outline-offset: 3px; z-index:
 .eyebrow span { color: #dc8770; }
 h1 { margin: .15rem 0 .45rem; font: bold clamp(2.4rem, 6.7vw, 5.35rem)/.98 Georgia, serif; letter-spacing: -.055em; }
 h1 em { color: var(--gold); font-weight: normal; }
+#palace-word { display: inline-block; touch-action: manipulation; user-select: none; }
 .subtitle { color: #d7ded6; font-size: clamp(.85rem, 2vw, 1.05rem); }
 .notice { border-left: 3px solid #b96955; padding: .2rem .75rem; }
 #progress { margin-top: .2rem; font-variant-numeric: tabular-nums; }

@@ -19,6 +19,7 @@ Kalendář se řídí místním datem návštěvníka v prosinci 2026. Po 24. pr
 zůstanou všechna okénka dostupná. Otevřená okénka se ukládají jen v daném
 prohlížeči a na dané webové adrese.
 
-Zkušební režim: stiskni dvakrát rychle P. Všechna okénka se odemknou,
-ale zkušební postup se neukládá. Další dvojstisk P nebo obnovení stránky
-vrátí běžný režim a původní postup.
+Zkušební režim: stiskni dvakrát rychle P nebo na telefonu pětkrát rychle
+klepni na slovo „palác“ v nadpisu. Všechna okénka se odemknou, ale zkušební
+postup se neukládá. Zopakuj gesto nebo obnov stránku pro návrat do běžného
+režimu s původním postupem.
