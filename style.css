@@ -68,7 +68,10 @@ h1 em { color: var(--gold); font-weight: normal; }
 }
 .window { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 2px solid #654639; border-radius: 50% 50% 6% 6% / 34% 34% 6% 6%; background: #483027; color: #fff6df; box-shadow: 0 0 0 2px #e7cc9f, .13rem .21rem 0 2px #8d6a53; }
 .shutter, .window img { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
-.window img { object-fit: contain; padding: 17% 5% 4%; background: #e7d6ac; }
+.window { background: radial-gradient(ellipse at 50% 34%, #efdfb9, #cba674 77%); }
+.window-art { position: absolute; pointer-events: none; }
+.window-chair { position: absolute; bottom: 3%; left: 15%; width: 70%; height: 74%; pointer-events: none; }
+.window img { object-fit: contain; object-position: center bottom; padding: 17% 11% 22%; }
 .shutter {
   display: grid;
   place-items: center;

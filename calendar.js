@@ -80,7 +80,7 @@ function addThumbnail(day, button) {
   const thumbnail = new Image();
   thumbnail.alt = "";
   thumbnail.src = catImage(day, true);
-  button.prepend(thumbnail);
+  button.querySelector(".shutter").before(thumbnail);
   return thumbnail;
 }
 
@@ -189,7 +189,7 @@ for (let day = 1; day <= total; day++) {
   button.type = "button";
   button.className = "window";
   button.dataset.day = day;
-  button.innerHTML = `<span class="shutter" aria-hidden="true"><span class="number">${day}</span></span>`;
+  button.innerHTML = `<svg class="window-chair" viewBox="0 0 64 58" preserveAspectRatio="xMidYMax meet" aria-hidden="true"><use href="#armchair"/></svg><span class="shutter" aria-hidden="true"><span class="number">${day}</span></span>`;
   button.addEventListener("click", () => openWindow(day, button));
   panel.append(button);
   windows.append(panel);
@@ -201,6 +201,7 @@ const branchRows = [
   [65, [22, 39, 57, 78]], [75, [20, 35, 50, 65, 81]], [86, [13, 30, 48, 65, 84]]
 ];
 const topCat = 11;
+const departureOffset = .08;
 const branchSpots = branchRows.flatMap(([y, xs]) => xs.map((x) => ({ x, y })))
   .map((spot, index) => ({ ...spot, day: index === 0 ? topCat : index + 1 === topCat ? 1 : index + 1 }));
 
@@ -223,7 +224,7 @@ function climbFrames(door, facade, tree, perchX, perchY, angle) {
     ({ offset, opacity, transform: pose(x, y, tilt, scale), easing: "steps(3, end)" });
   return [
     frame(0, doorX, sillY, -7, .45, 0),
-    frame(.08, doorX, sillY - step, 12, .8),
+    frame(departureOffset, doorX, sillY - step, 12, .8),
     ...(stacked ? [frame(.18, laneX, shoulderY, side * 13, .85)] : []),
     frame(stacked ? .36 : .24, landingX, groundY, -13),
     frame(stacked ? .41 : .29, landingX, groundY, 8, .83),
@@ -236,11 +237,19 @@ function climbFrames(door, facade, tree, perchX, perchY, angle) {
   ];
 }
 
+function setWindowCat(thumbnail, departed) {
+  for (const animation of thumbnail.getAnimations()) animation.cancel();
+  thumbnail.style.opacity = departed ? "0" : "";
+}
+
 function drawCats(animate) {
   perches.replaceChildren();
   const tree = perches.getBoundingClientRect();
   const facade = building.getBoundingClientRect();
   return branchSpots.map(({ x, y, day }) => {
+    const button = doors.get(day);
+    const thumbnail = button.querySelector("img");
+    if (thumbnail) setWindowCat(thumbnail, !animate);
     const cat = new Image();
     const angle = day === topCat ? 0 : (day * 17) % 29 - 14;
     cat.className = "scrap";
@@ -253,13 +262,16 @@ function drawCats(animate) {
     perches.append(cat);
     if (!animate) return Promise.resolve();
 
-    const door = doors.get(day).getBoundingClientRect();
+    const door = button.getBoundingClientRect();
     const endX = tree.left + (x / 100) * tree.width;
     const endY = tree.top + (y / 100) * tree.height;
+    const duration = day === topCat ? 2900 : 2530;
+    const delay = ((day - 1) % 6) * 90 + Math.floor((day - 1) / 6) * 450;
     const animation = cat.animate(climbFrames(door, facade, tree, endX, endY, angle), {
-      duration: day === topCat ? 2900 : 2530,
-      delay: ((day - 1) % 6) * 90 + Math.floor((day - 1) / 6) * 450,
-      fill: "backwards"
+      duration, delay, fill: "backwards"
+    });
+    thumbnail?.animate([{ opacity: 1 }, { opacity: 0 }], {
+      duration: duration * departureOffset, delay, easing: "steps(1, end)", fill: "forwards"
     });
     return animation.finished;
   });
@@ -325,7 +337,10 @@ function toggleCheatMode() {
   if (cheatBackup) {
     ({ opened, finalePlayed } = cheatBackup);
     cheatBackup = null;
-    if (!finalePlayed) perches.replaceChildren();
+    if (!finalePlayed) {
+      perches.replaceChildren();
+      for (const thumbnail of windows.querySelectorAll(".window img")) setWindowCat(thumbnail, false);
+    }
     replay.hidden = !finalePlayed;
     calendarNote.textContent = finalePlayed ? finaleNote : defaultCalendarNote;
     cheatNote.textContent = "Zkušební režim je vypnutý.";
