@@ -16,6 +16,7 @@ const reveal = document.querySelector("#reveal");
 const revealTitle = document.querySelector("#reveal-title");
 const revealDone = document.querySelector("#reveal-done");
 const portrait = document.querySelector("#portrait");
+const portraitLoading = document.querySelector("#portrait-loading");
 const portraitCredit = document.querySelector("#portrait-credit");
 const imageError = document.querySelector("#image-error");
 const scene = document.querySelector(".scene");
@@ -29,6 +30,7 @@ let opened = new Set();
 let finalePlayed = false;
 let climbing = false;
 let openingDoor = false;
+let portraitRequest;
 let renderedDay;
 let cheatBackup = null;
 let lastP = -Infinity;
@@ -73,6 +75,14 @@ function catImage(day, scrap = false) {
   return `cats/${day}${scrap ? "-scrap" : ""}.webp${scrap ? "?v=3" : ""}`;
 }
 
+function addThumbnail(day, button) {
+  const thumbnail = new Image();
+  thumbnail.alt = "";
+  thumbnail.src = catImage(day, true);
+  button.prepend(thumbnail);
+  return thumbnail;
+}
+
 function updateWindows() {
   const date = new Date();
   const unlocked = availableDay(date);
@@ -85,10 +95,7 @@ function updateWindows() {
     button.setAttribute("aria-label", `Okénko ${day} — ${day}. prosince, ${windowLabels[state]}${day === today ? ", dnes" : ""}`);
     const existingThumbnail = button.querySelector("img");
     if (isOpen && !existingThumbnail) {
-      const thumbnail = new Image();
-      thumbnail.alt = "";
-      thumbnail.src = catImage(day, true);
-      button.prepend(thumbnail);
+      addThumbnail(day, button);
     } else if (!isOpen) {
       existingThumbnail?.remove();
     }
@@ -100,43 +107,67 @@ function updateWindows() {
 
 async function openWindow(day, button) {
   if (openingDoor || reveal.open) return;
+  portraitRequest = null;
+  portrait.hidden = true;
+  portraitLoading.hidden = true;
   imageError.hidden = true;
   portraitCredit.hidden = true;
   if (!opened.has(day) && day > availableDay()) {
     revealTitle.textContent = `Okénko ${day} se odemkne ${day}. prosince`;
-    portrait.hidden = true;
     revealDone.textContent = courtyardLabel;
     reveal.showModal();
     return;
   }
+  portrait.alt = `Kočičí ilustrace z okénka ${day}`;
+  portrait.src = catImage(day);
+  const request = portrait.decode().then(() => true, (error) => {
+    console.warn(`Could not load illustration for window ${day}.`, error);
+    return false;
+  });
+  portraitRequest = request;
+
   const firstOpen = !opened.has(day);
   if (firstOpen) {
-    opened.add(day);
-    saveProgress();
-  }
-  updateWindows();
-  if (firstOpen && !reducedMotion.matches) {
     openingDoor = true;
+    button.setAttribute("aria-busy", "true");
     try {
-      await button.querySelector(".shutter").animate(
-        [{ transform: "translateY(0)" }, { transform: "translateY(-100%)" }],
-        { duration: 360, easing: "steps(6, end)" }
-      ).finished;
-    } catch (error) {
-      console.warn("The shutter animation was interrupted.", error);
+      const thumbnail = addThumbnail(day, button);
+      try {
+        await thumbnail.decode();
+      } catch (error) {
+        thumbnail.hidden = true;
+        console.warn(`Could not load thumbnail for window ${day}.`, error);
+      }
+      opened.add(day);
+      saveProgress();
+      updateWindows();
+      if (!reducedMotion.matches) {
+        try {
+          await button.querySelector(".shutter").animate(
+            [{ transform: "translateY(0)" }, { transform: "translateY(-100%)" }],
+            { duration: 360, easing: "steps(6, end)" }
+          ).finished;
+        } catch (error) {
+          console.warn("The shutter animation was interrupted.", error);
+        }
+      }
     } finally {
       openingDoor = false;
+      button.removeAttribute("aria-busy");
     }
   }
   revealTitle.textContent = `Okénko ${day} · ${day}. prosince`;
-  portrait.alt = `Kočičí ilustrace z okénka ${day}`;
-  portrait.hidden = false;
-  portrait.src = catImage(day);
-  portraitCredit.hidden = day !== 24;
+  portraitLoading.hidden = false;
   revealDone.textContent = opened.size === total && !finalePlayed
     ? "Pusť kočky ven!"
     : courtyardLabel;
   reveal.showModal();
+  const loaded = await request;
+  if (portraitRequest !== request || !reveal.open) return;
+  portraitLoading.hidden = true;
+  portrait.hidden = !loaded;
+  portraitCredit.hidden = !loaded || day !== 24;
+  imageError.hidden = loaded;
 }
 
 for (let day = 1; day <= total; day++) {
@@ -246,11 +277,6 @@ async function playFinale() {
   }
 }
 
-portrait.addEventListener("error", () => {
-  if (portrait.hidden) return;
-  portrait.hidden = true;
-  imageError.hidden = false;
-});
 reveal.addEventListener("close", () => {
   if (opened.size === total && !finalePlayed) void playFinale();
 });

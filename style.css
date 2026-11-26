@@ -111,7 +111,10 @@ dialog::backdrop { background: #10191fd9; }
 .reveal-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: .55rem; }
 .reveal-top h2 { margin: 0; font: bold clamp(1.25rem, 4vw, 2rem)/1.2 Georgia, serif; }
 .close { width: 2.75rem; height: 2.75rem; border: 1px solid #f3d9a1; background: transparent; color: inherit; font-size: 1.6rem; }
-#portrait { display: block; width: 100%; height: min(59dvh, 34rem); object-fit: contain; background: #192927; }
+#portrait, #portrait-loading { width: 100%; height: min(59dvh, 34rem); background: #192927; }
+#portrait { display: block; object-fit: contain; }
+#portrait-loading { display: grid; place-items: center; margin: 0; }
+.window[aria-busy="true"] { cursor: progress; }
 .reveal-done { margin-top: .65rem; }
 
 @media (max-width: 700px) {

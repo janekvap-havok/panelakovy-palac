@@ -6,8 +6,8 @@
   <meta name="theme-color" content="#182a33">
   <title>Panelákový palác — Kočičí advent</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css?v=6">
-  <script src="calendar.js?v=6" defer></script>
+  <link rel="stylesheet" href="style.css?v=7">
+  <script src="calendar.js?v=7" defer></script>
 </head>
 <body>
   <main>
@@ -62,7 +62,8 @@
       <h2 id="reveal-title"></h2>
       <form method="dialog"><button class="close" value="close" aria-label="Zavřít okénko" autofocus>×</button></form>
     </div>
-    <img id="portrait" alt="">
+    <img id="portrait" alt="" hidden>
+    <p id="portrait-loading" role="status" hidden>Načítám obrázek…</p>
     <p id="portrait-credit" hidden>Autorka ilustrace: Vanessa Stockard</p>
     <p id="image-error" role="status" hidden>Obrázek se nepodařilo načíst. Zavři okénko a zkus to znovu.</p>
     <form method="dialog"><button class="reveal-done" id="reveal-done">Zpátky na nádvoří</button></form>
