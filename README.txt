@@ -1,4 +1,4 @@
-Panelákový palác – středověký kočičí advent v železobetonu
+Panelákový palác – středověký kočičí advent za hradbami
 
 Web není potřeba sestavovat a nemá žádné externí závislosti. Pro náhled
 rozbal ZIP, otevři terminál ve složce se souborem index.html a spusť:

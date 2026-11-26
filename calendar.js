@@ -196,10 +196,15 @@ const branchSpots = branchRows.flatMap(([y, xs]) => xs.map((x) => ({ x, y })))
 function climbFrames(door, facade, tree, perchX, perchY, angle) {
   const doorX = door.left + door.width / 2;
   const sillY = door.bottom - door.height * .18;
-  const groundY = facade.bottom + (tree.top >= facade.bottom ? 3 : 8);
+  const stacked = tree.top >= facade.bottom;
+  const side = doorX < facade.left + facade.width / 2 ? -1 : 1;
   const trunkX = tree.left + tree.width * .5;
   const trunkY = tree.top + tree.height * .92;
-  const approachX = tree.left + tree.width * .15;
+  const laneX = trunkX + side * tree.width * .59;
+  const shoulderY = Math.min(facade.bottom, tree.top - 4);
+  const landingX = stacked ? laneX : doorX;
+  const groundY = stacked ? trunkY : facade.bottom + 8;
+  const approachX = stacked ? trunkX + side * tree.width * .35 : tree.left + tree.width * .15;
   const step = tree.width * .034;
   const pose = (x, y, tilt, scale = 1) =>
     `translate(-50%, -100%) translate(${x - perchX}px, ${y - perchY}px) rotate(${tilt}deg) scale(${scale})`;
@@ -208,11 +213,12 @@ function climbFrames(door, facade, tree, perchX, perchY, angle) {
   return [
     frame(0, doorX, sillY, -7, .45, 0),
     frame(.08, doorX, sillY - step, 12, .8),
-    frame(.24, doorX, groundY, -13),
-    frame(.29, doorX, groundY, 8, .83),
-    frame(.43, approachX, (groundY + trunkY) / 2 - step, -8),
-    frame(.56, approachX + (trunkX - approachX) * .45, trunkY, 9),
-    frame(.63, trunkX, trunkY, -7),
+    ...(stacked ? [frame(.18, laneX, shoulderY, side * 13, .85)] : []),
+    frame(stacked ? .36 : .24, landingX, groundY, -13),
+    frame(stacked ? .41 : .29, landingX, groundY, 8, .83),
+    frame(stacked ? .51 : .43, approachX, (groundY + trunkY) / 2 - step, -8),
+    frame(stacked ? .59 : .56, approachX + (trunkX - approachX) * .45, trunkY, 9),
+    frame(stacked ? .67 : .63, trunkX, trunkY, -7),
     frame(.76, trunkX - step * 1.5, trunkY + (perchY - trunkY) * .43, 13),
     frame(.89, trunkX + step, trunkY + (perchY - trunkY) * .77, -9),
     frame(1, perchX, perchY, angle)

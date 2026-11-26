@@ -4,6 +4,7 @@
   --cream: #f2e7ca;
   --gold: #eed09a;
   --rust: #974d3f;
+  --masonry: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='54' viewBox='0 0 120 54'%3E%3Cpath fill='%23f8ddae' opacity='.23' d='M0 0h38l-2 17H0zM77 18h43v17H76zM25 36h47l-2 18H26z'/%3E%3Cpath fill='%237a5140' opacity='.23' d='M38 0h51l1 17H36zM21 18h56l-1 17H22zM72 36h30l2 18H70z'/%3E%3Cpath d='M0 18h120M0 35h120M0 53h120M38 0l-2 18M89 0l1 18M21 18l1 17M77 18l-1 17M25 35l1 18M72 35l-2 18M102 35l2 18' fill='none' stroke='%23715848' stroke-opacity='.76' stroke-width='1.8'/%3E%3Cpath d='M0 20h120M0 37h120M0 2h120M7 6l12 1m32 2 17-1m27 19 14-1M7 46l12 1m23-5 20 1' fill='none' stroke='%23fae4bc' stroke-opacity='.48'/%3E%3C/svg%3E");
   font: 16px/1.45 system-ui, sans-serif;
 }
 
@@ -32,48 +33,45 @@ h1 em { color: var(--gold); font-weight: normal; }
   background:
     radial-gradient(circle, #f8f6df99 0 1px, transparent 1.6px) 7px 8px / 79px 69px,
     radial-gradient(circle, #e1ece484 0 1px, transparent 1.7px) 0 5px / 47px 47px,
-    linear-gradient(#283e49, #668187 76%, #aeb9af 94%);
+    linear-gradient(#303e63, #7a8fa3 67%, #c6cfd0 94%);
 }
 .scene::before {
   content: "";
   position: absolute;
   inset: auto -2% -2% -2%;
   height: 23%;
-  background: #ccd4c5;
+  background: #e0e5dc;
   clip-path: polygon(0 26%, 9% 17%, 15% 23%, 28% 7%, 40% 15%, 55% 9%, 66% 19%, 78% 3%, 88% 17%, 100% 11%, 100% 100%, 0 100%);
 }
 .moon { position: absolute; width: clamp(2.1rem, 8vw, 6rem); aspect-ratio: 1; background: #e6dbb4; border-radius: 48% 52% 47% 54%; top: 4%; right: 12%; opacity: .8; box-shadow: .2rem .25rem #b3b0a1; }
 .estate { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .52fr); align-items: end; gap: clamp(.75rem, 2.8vw, 2.1rem); padding: clamp(1.25rem, 5vw, 3.75rem) clamp(.65rem, 3.5vw, 2.6rem) clamp(.9rem, 3vw, 2.2rem); }
-.building { min-width: 0; position: relative; box-shadow: .42rem .45rem #23363573; }
+.building { min-width: 0; position: relative; filter: drop-shadow(.38rem .48rem #2f294954); }
 .roof {
   height: clamp(1.5rem, 4vw, 3.5rem);
-  background: repeating-linear-gradient(90deg, #a5aba0 0, #8b9690 calc(12.5% - 2px), #697874 calc(12.5% - 2px) 12.5%);
+  background: var(--masonry) left bottom / 120px 54px, linear-gradient(#e9d8b8, #ad8c71);
   clip-path: polygon(0 0, 9% 0, 9% 43%, 15% 43%, 15% 9%, 24% 9%, 24% 48%, 32% 48%, 32% 4%, 43% 4%, 43% 48%, 55% 48%, 55% 4%, 67% 4%, 67% 48%, 74% 48%, 74% 9%, 84% 9%, 84% 43%, 91% 43%, 91% 0, 100% 0, 100% 100%, 0 100%);
-  border-bottom: .28rem solid #344341;
+  border-bottom: .28rem solid #81624f;
 }
-.frieze, .foundation { background: #687670; color: #fff3d4; text-align: center; font: 700 clamp(.62rem, 1.65vw, .9rem)/1 ui-monospace, monospace; letter-spacing: .18em; padding: .65rem .15rem; }
+.frieze, .foundation { background: #815041; color: #fff3d4; text-align: center; font: 700 clamp(.65rem, 1.65vw, .96rem)/1 Georgia, serif; letter-spacing: .18em; padding: .65rem .15rem; }
+.frieze { box-shadow: inset 0 2px #e4c49b, inset 0 -2px #694836; }
 .frieze span { color: #ffcb82; }
-.windows { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 2px; padding: 2px; background: #4e5e58; }
+.windows { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 2px; padding: 2px; background: var(--masonry) left top / 120px 54px, linear-gradient(110deg, #d6bc94, #b99576); }
 .panel {
   position: relative;
   display: grid;
   min-width: 0;
   aspect-ratio: 1.08;
   padding: clamp(.16rem, .95vw, .68rem);
-  background:
-    radial-gradient(circle, #49584c66 .65px, transparent 1px) 3px 4px / 11px 9px,
-    linear-gradient(128deg, #aeb3a4, #919d92 60%, #798b81);
-  box-shadow: inset 1px 1px #e0dfba7a, inset -2px -2px #58645d8a;
+  padding-inline: clamp(.24rem, 1.35vw, .95rem);
 }
-.panel:nth-child(3n) { filter: brightness(.92); }
-.window { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 2px solid #30403b; background: #283e39; color: #fff6df; box-shadow: .12rem .16rem #394841; }
+.window { position: relative; min-width: 0; min-height: 0; overflow: hidden; padding: 0; border: 2px solid #654639; border-radius: 50% 50% 6% 6% / 34% 34% 6% 6%; background: #483027; color: #fff6df; box-shadow: 0 0 0 2px #e7cc9f, .13rem .21rem 0 2px #8d6a53; }
 .shutter, .window img { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
-.window img { object-fit: contain; padding: 2px; background: #e7d6ac; }
+.window img { object-fit: contain; padding: 17% 5% 4%; background: #e7d6ac; }
 .shutter {
   display: grid;
   place-items: center;
   border: 1px solid #ffffff3d;
-  background: repeating-linear-gradient(0deg, #0002 0 1px, transparent 1px 5px), #576660;
+  background: repeating-linear-gradient(0deg, #24151445 0 1px, transparent 1px 6px), #64443c;
   font: bold clamp(.83rem, 2.2vw, 1.65rem)/1 Georgia, serif;
   text-shadow: 1px 2px #251c17;
 }
@@ -84,8 +82,8 @@ h1 em { color: var(--gold); font-weight: normal; }
 .window[data-state="opened"] .shutter { transform: translateY(-100%); background-color: var(--rust); }
 .panel:has(.window[data-state="opened"])::after { content: attr(data-window-label); position: absolute; bottom: 0; right: .15rem; pointer-events: none; background: #192829; color: #fff6df; padding: 0 .18rem; font: bold .61rem/1.1 ui-monospace, monospace; }
 @media (hover: hover) { .window:not([data-state="locked"]):hover { filter: brightness(1.23); } }
-.foundation { display: flex; align-items: end; justify-content: center; gap: 1rem; padding: .4rem; background: #515f59; }
-.foundation i { width: 13%; height: .85rem; border: 1px solid #9fa597; border-bottom: none; background: #293935; margin-bottom: -.4rem; }
+.foundation { display: flex; align-items: end; justify-content: center; gap: 1rem; padding: .4rem; background: var(--masonry) left bottom / 120px 54px, #a48267; border-top: 2px solid #896951; color: #fff2ca; text-shadow: 0 1px #52352a; }
+.foundation i { width: 13%; height: .85rem; border: 2px solid #dfbf92; border-bottom: none; border-radius: 50% 50% 0 0 / 80% 80% 0 0; background: #4a3028; margin-bottom: -.4rem; }
 
 .courtyard { position: relative; min-width: 0; text-align: center; z-index: 2; }
 .tree { position: relative; margin-inline: auto; max-width: 25rem; }
