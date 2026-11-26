@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#182a33">
+  <title>Panelákový palác — Kočičí advent</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="style.css?v=3">
+  <script src="calendar.js?v=5" defer></script>
+</head>
+<body>
+  <main>
+    <header class="masthead">
+      <div>
+        <p class="eyebrow"><span>❋</span> ZIMNÍ SÍDLIŠTĚ Č. 24 <span>❋</span></p>
+        <h1>Panelákový <em>palác</em></h1>
+        <p class="subtitle">Středověký kočičí advent v železobetonu.</p>
+      </div>
+      <div class="notice">
+        <p class="eyebrow">OTEVŘENÁ OKÉNKA</p>
+        <p id="progress" role="status" aria-label="Otevřená okénka: 0 z 24">0 z 24</p>
+      </div>
+    </header>
+
+    <section class="scene" aria-label="Adventní kalendář a nádvoří">
+      <div class="moon" aria-hidden="true"></div>
+      <div class="estate">
+        <div class="building">
+          <div class="roof" aria-hidden="true"></div>
+          <div class="frieze" aria-hidden="true"><span>✦</span> PANELÁKOVÝ PALÁC <span>✦</span></div>
+          <div id="windows" class="windows" role="group" aria-label="Prosincová okénka"></div>
+          <div class="foundation" aria-hidden="true"><span>BLOK 24</span><i></i><span>TYP XII</span></div>
+        </div>
+        <div class="courtyard">
+          <div class="tree">
+            <svg viewBox="0 0 300 400" aria-hidden="true">
+              <ellipse cx="153" cy="374" rx="131" ry="17" fill="#778c8a" opacity=".35"/>
+              <path d="M136 329 171 325 169 373 137 378Z" fill="#775346"/>
+              <path d="M148 30 190 109 173 107 220 170 203 174 258 238 234 242 291 330 231 345 174 337 119 349 64 340 9 343 67 259 48 258 100 180 77 182 124 110 107 116Z" fill="#1e403a"/>
+              <path d="M148 40 170 103 183 111 149 108 108 119ZM145 126 197 164 215 174 151 166 92 183ZM141 200 215 224 254 246 189 245 126 235 62 260ZM140 270 217 300 281 332 230 340 168 334 120 344 63 335 18 339Z" fill="#547063"/>
+              <path d="m125 109 24-7 28 8m-94 70 76-16 51 9m-155 83 77-22 60 11 57 1M18 337l46-6 55 11 53-10 58 7 52-11" fill="none" stroke="#e1e6ce" stroke-width="4" stroke-linecap="round" opacity=".75"/>
+              <path class="star" d="m148 11 7 15 18 1-13 12 4 17-16-9-16 9 4-17-13-12 18-1Z"/>
+            </svg>
+            <div class="perches" id="perches" aria-hidden="true"></div>
+          </div>
+          <button type="button" class="replay" id="replay" hidden>↻ Přehrát kočičí výstup znovu</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p id="calendar-note" role="status">V prosinci 2026 se každý den odemkne jedno okénko. Některý den vynecháš? Okénko na tebe počká.</p>
+      <p id="cheat-note" role="status"></p>
+      <p id="storage-note" role="status" hidden>V tomto prohlížeči se otevřená okénka neukládají. Po obnovení stránky se zase zavřou.</p>
+      <noscript>Pro otevírání okének povol JavaScript.</noscript>
+    </footer>
+  </main>
+
+  <dialog id="reveal" aria-labelledby="reveal-title">
+    <div class="reveal-top">
+      <h2 id="reveal-title"></h2>
+      <form method="dialog"><button class="close" value="close" aria-label="Zavřít okénko" autofocus>×</button></form>
+    </div>
+    <img id="portrait" alt="">
+    <p id="portrait-credit" hidden>Autorka ilustrace: Vanessa Stockard</p>
+    <p id="image-error" role="status" hidden>Obrázek se nepodařilo načíst. Zavři okénko a zkus to znovu.</p>
+    <form method="dialog"><button class="reveal-done" id="reveal-done">Zpátky na nádvoří</button></form>
+  </dialog>
+</body>
+</html>
