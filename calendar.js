@@ -11,6 +11,7 @@ const progress = document.querySelector("#progress");
 const calendarNote = document.querySelector("#calendar-note");
 const defaultCalendarNote = calendarNote.textContent;
 const cheatNote = document.querySelector("#cheat-note");
+const openAll = document.querySelector("#open-all");
 const storageNote = document.querySelector("#storage-note");
 const reveal = document.querySelector("#reveal");
 const revealTitle = document.querySelector("#reveal-title");
@@ -83,6 +84,28 @@ function addThumbnail(day, button) {
   return thumbnail;
 }
 
+async function prepareThumbnail(day, button) {
+  const thumbnail = addThumbnail(day, button);
+  try {
+    await thumbnail.decode();
+  } catch (error) {
+    thumbnail.hidden = true;
+    console.warn(`Could not load thumbnail for window ${day}.`, error);
+  }
+}
+
+async function raiseShutter(button) {
+  if (reducedMotion.matches) return;
+  try {
+    await button.querySelector(".shutter").animate(
+      [{ transform: "translateY(0)" }, { transform: "translateY(-100%)" }],
+      { duration: 360, easing: "steps(6, end)" }
+    ).finished;
+  } catch (error) {
+    console.warn("The shutter animation was interrupted.", error);
+  }
+}
+
 function updateWindows() {
   const date = new Date();
   const unlocked = availableDay(date);
@@ -102,6 +125,8 @@ function updateWindows() {
   }
   progress.textContent = `${opened.size} z ${total}`;
   progress.setAttribute("aria-label", `Otevřená okénka: ${progress.textContent}`);
+  openAll.hidden = !cheatBackup;
+  openAll.setAttribute("aria-disabled", String(openingDoor || opened.size === total));
   renderedDay = date.toDateString();
 }
 
@@ -131,29 +156,15 @@ async function openWindow(day, button) {
     openingDoor = true;
     button.setAttribute("aria-busy", "true");
     try {
-      const thumbnail = addThumbnail(day, button);
-      try {
-        await thumbnail.decode();
-      } catch (error) {
-        thumbnail.hidden = true;
-        console.warn(`Could not load thumbnail for window ${day}.`, error);
-      }
+      await prepareThumbnail(day, button);
       opened.add(day);
       saveProgress();
       updateWindows();
-      if (!reducedMotion.matches) {
-        try {
-          await button.querySelector(".shutter").animate(
-            [{ transform: "translateY(0)" }, { transform: "translateY(-100%)" }],
-            { duration: 360, easing: "steps(6, end)" }
-          ).finished;
-        } catch (error) {
-          console.warn("The shutter animation was interrupted.", error);
-        }
-      }
+      await raiseShutter(button);
     } finally {
       openingDoor = false;
       button.removeAttribute("aria-busy");
+      openAll.setAttribute("aria-disabled", String(opened.size === total));
     }
   }
   revealTitle.textContent = `Okénko ${day} · ${day}. prosince`;
@@ -287,6 +298,25 @@ reveal.addEventListener("close", () => {
   if (opened.size === total && !finalePlayed) void playFinale();
 });
 replay.addEventListener("click", () => void playFinale());
+
+openAll.addEventListener("click", async () => {
+  if (!cheatBackup || openingDoor || reveal.open || climbing || opened.size === total) return;
+  const remaining = [...doors].filter(([day]) => !opened.has(day));
+  openingDoor = true;
+  openAll.setAttribute("aria-busy", "true");
+  openAll.setAttribute("aria-disabled", "true");
+  try {
+    await Promise.all(remaining.map(([day, button]) => prepareThumbnail(day, button)));
+    for (const [day] of remaining) opened.add(day);
+    updateWindows();
+    await Promise.all(remaining.map(([, button]) => raiseShutter(button)));
+  } finally {
+    openingDoor = false;
+    openAll.removeAttribute("aria-busy");
+    openAll.setAttribute("aria-disabled", String(opened.size === total));
+  }
+  if (!finalePlayed) void playFinale();
+});
 
 function toggleCheatMode() {
   if (reveal.open || openingDoor || climbing) return;

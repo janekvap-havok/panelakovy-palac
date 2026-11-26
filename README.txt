@@ -1,4 +1,4 @@
-Panelákový palác – středověký kočičí advent za hradbami
+Panelový palác – středověký kočičí advent za hradbami
 
 Web není potřeba sestavovat a nemá žádné externí závislosti. Pro náhled
 rozbal ZIP, otevři terminál ve složce se souborem index.html a spusť:
@@ -20,6 +20,7 @@ zůstanou všechna okénka dostupná. Otevřená okénka se ukládají jen v dan
 prohlížeči a na dané webové adrese.
 
 Zkušební režim: stiskni dvakrát rychle P nebo na telefonu pětkrát rychle
-klepni na slovo „palác“ v nadpisu. Všechna okénka se odemknou, ale zkušební
+klepni na slovo „palác“ v nadpisu. Okénka se odemknou a tlačítko
+„Otevřít všechna okénka“ je otevře najednou a spustí finále. Zkušební
 postup se neukládá. Zopakuj gesto nebo obnov stránku pro návrat do běžného
 režimu s původním postupem.

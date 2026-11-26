@@ -4,22 +4,23 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#182a33">
-  <title>Panelákový palác — Kočičí advent</title>
+  <title>Panelový palác — Kočičí advent</title>
   <link rel="icon" href="data:,">
-  <link rel="stylesheet" href="style.css?v=8">
-  <script src="calendar.js?v=8" defer></script>
+  <link rel="stylesheet" href="style.css?v=9">
+  <script src="calendar.js?v=9" defer></script>
 </head>
 <body>
   <main>
     <header class="masthead">
       <div>
         <p class="eyebrow"><span>❋</span> HRAD O ČTYŘIADVACETI OKÉNKÁCH <span>❋</span></p>
-        <h1>Panelákový <em id="palace-word">palác</em></h1>
+        <h1>Panelový <em id="palace-word">palác</em></h1>
         <p class="subtitle">Středověký kočičí advent za hradbami.</p>
       </div>
       <div class="notice">
         <p class="eyebrow">OTEVŘENÁ OKÉNKA</p>
         <p id="progress" role="status" aria-label="Otevřená okénka: 0 z 24">0 z 24</p>
+        <button type="button" class="open-all" id="open-all" hidden>Otevřít všechna okénka</button>
       </div>
     </header>
 
@@ -28,7 +29,30 @@
       <div class="estate">
         <div class="building">
           <div class="roof" aria-hidden="true"></div>
-          <div class="frieze" aria-hidden="true"><span>✦</span> PANELÁKOVÝ PALÁC <span>✦</span></div>
+          <svg class="roof-trim" viewBox="0 0 480 48" aria-hidden="true">
+            <defs>
+              <g id="roof-candle">
+                <circle cy="8" r="8" fill="#ffc76d" opacity=".22"/>
+                <path d="M0 2C-6 10-2 13 0 12C4 12 4 8 0 2Z" fill="#ffd475"/>
+                <path d="M0 15v2" stroke="#382823" stroke-width="1.5"/>
+                <path d="M-3.5 16h7v10h-7z" fill="#fff1cd"/>
+                <path d="M-5 26h10" stroke="#b37c44" stroke-width="2"/>
+              </g>
+            </defs>
+            <g fill="none" stroke-linecap="round">
+              <path d="M10 28q46 25 92 0q46 25 92 0q46 25 92 0q46 25 92 0q46 25 92 0" stroke="#22463c" stroke-width="7"/>
+              <path d="M10 28q46 25 92 0q46 25 92 0q46 25 92 0q46 25 92 0q46 25 92 0" stroke="#63866a" stroke-width="2.5" stroke-dasharray="3 5"/>
+              <path d="M10 32q46 26 92 0q46 26 92 0q46 26 92 0q46 26 92 0q46 26 92 0" stroke="#553a2c" stroke-width="1.2"/>
+            </g>
+            <g class="roof-lights">
+              <path d="M32 41h0m92 0h0m92 0h0m92 0h0m92 0h0" stroke="#f59187"/>
+              <path d="M56 45h0m92 0h0m92 0h0m92 0h0m92 0h0" stroke="#ffe0a0"/>
+              <path d="M80 41h0m92 0h0m92 0h0m92 0h0m92 0h0" stroke="#a2d8de"/>
+            </g>
+            <use href="#roof-candle" x="10"/><use href="#roof-candle" x="102"/><use href="#roof-candle" x="194"/>
+            <use href="#roof-candle" x="286"/><use href="#roof-candle" x="378"/><use href="#roof-candle" x="470"/>
+          </svg>
+          <div class="frieze" aria-hidden="true"><span>✦</span> PANELOVÝ PALÁC <span>✦</span></div>
           <div id="windows" class="windows" role="group" aria-label="Prosincová okénka"></div>
           <div class="foundation" aria-hidden="true"><span>✦</span><i></i><span>✦</span></div>
         </div>
